@@ -59,19 +59,23 @@ const handlePress = (linkProps, componentProps) => {
 };
 
 export const PlaidLink = ({
-  component,
-  componentProps,
   children,
+  className,
+  title,
+  accessibilityLabel,
+  color,
   ...linkProps
 }) => {
-  const Component = component;
   return (
-    <Component
-      {...componentProps}
-      onPress={() => handlePress(linkProps, componentProps)}
-    >
-      {children}
-    </Component>
+    <View>
+      <TouchableOpacity
+        activeOpacity={1.0}
+        style={className}
+        onPress={() => openLink(linkProps)}
+      >
+        {children}
+      </TouchableOpacity>
+    </View>
   );
 };
 
@@ -107,18 +111,14 @@ PlaidLink.propTypes = {
   // the Plaid dashboard (https://dashboard.plaid.com).
   publicKey: PropTypes.string.isRequired,
 
-  // The redirect uri for the android sdk which must be
-  // registered on dashboard.plaid.com
-  webviewRedirectUri: PropTypes.string.isRequired,
-
   // Optional props
+
+  // Button class name as a string.
+  className: PropTypes.string,
 
   // A list of Plaid-supported country codes using the ISO-3166-1 alpha-2
   // country code standard.
   countryCodes: PropTypes.arrayOf(PropTypes.string),
-
-  // Allows non default customization to be retrieved by name.
-  linkCustomizationName: PropTypes.string,
 
   // Plaid-supported language to localize Link. English will be used by default.
   language: PropTypes.string,
@@ -141,16 +141,6 @@ PlaidLink.propTypes = {
   // Specify a webhook to associate with a user.
   webhook: PropTypes.string,
 
-  // Underlying component to render
-  component: PropTypes.func,
-
-  // Props for underlying component
-  componentProps: PropTypes.object,
-
   // Note: onEvent is omitted here, to handle onEvent callbacks refer to
   // the documentation here: https://github.com/plaid/react-native-plaid-link-sdk#to-receive-onevent-callbacks
-};
-
-PlaidLink.defaultProps = {
-  component: TouchableOpacity,
 };
